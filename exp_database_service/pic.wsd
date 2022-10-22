@@ -1,0 +1,23 @@
+@startuml
+
+participant "internal service" as internal
+participant "ambassador" as ambassador
+participant "database" as db
+
+==init setup==
+ambassador -> db: connect database
+ambassador <-- db
+ambassador <-> db: long-term connection
+
+internal -> ambassador: connect ambasssador
+internal <-- ambassador
+internal <-> ambassador: long-term connection
+
+==interactive==
+
+internal -> ambassador: crud database
+ambassador -> db: crud database
+ambassador <-- db: result
+internal <-- ambassador: result
+
+@enduml
