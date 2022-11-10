@@ -10,7 +10,7 @@ type CollectionFactory interface {
 type entityName string
 
 const (
-	EnterpriseInfo entityName = "EnterpriseInfo"
+	Example entityName = "Example"
 )
 
 func (n entityName) ToString() string {

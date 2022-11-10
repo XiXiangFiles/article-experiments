@@ -21,7 +21,7 @@ func NewMySQLHandler(ctx context.Context, MysqlUri string, DbName string) (Colle
 	if err != nil {
 		return nil, err
 	}
-	mysql.Collections[EnterpriseInfo] = entities.NewProductCollection(mysql.Conn.DB)
+	mysql.Collections[Example] = entities.NewProductCollection(mysql.Conn.DB)
 	var c CollectionFactory = mysql
 	return c, nil
 }
