@@ -5,7 +5,7 @@ option go_package = "/pb";
 
 service ExpService {
   rpc AddData(AddDataParameter) returns (AddDataResponse);
-  rpc QueryData(QueryDataParamerter) returns (QueryDataResponse);
+  rpc QueryData(QueryDataParameter) returns (QueryDataResponse);
 }
 
 message AddDataParameter {
@@ -17,11 +17,11 @@ message AddDataResponse {
   bytes data = 2;
 }
 
-message QueryDataParamerter {
-  string id = 1;
+message QueryDataParameter {
+  int32 id = 1;
 }
 
 message QueryDataResponse {
-  string id = 1;
+  int32 id = 1;
   bytes data = 2;
 }

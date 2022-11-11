@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExpServiceClient interface {
 	AddData(ctx context.Context, in *AddDataParameter, opts ...grpc.CallOption) (*AddDataResponse, error)
-	QueryData(ctx context.Context, in *QueryDataParamerter, opts ...grpc.CallOption) (*QueryDataResponse, error)
+	QueryData(ctx context.Context, in *QueryDataParameter, opts ...grpc.CallOption) (*QueryDataResponse, error)
 }
 
 type expServiceClient struct {
@@ -43,7 +43,7 @@ func (c *expServiceClient) AddData(ctx context.Context, in *AddDataParameter, op
 	return out, nil
 }
 
-func (c *expServiceClient) QueryData(ctx context.Context, in *QueryDataParamerter, opts ...grpc.CallOption) (*QueryDataResponse, error) {
+func (c *expServiceClient) QueryData(ctx context.Context, in *QueryDataParameter, opts ...grpc.CallOption) (*QueryDataResponse, error) {
 	out := new(QueryDataResponse)
 	err := c.cc.Invoke(ctx, "/pb.ExpService/QueryData", in, out, opts...)
 	if err != nil {
@@ -57,7 +57,7 @@ func (c *expServiceClient) QueryData(ctx context.Context, in *QueryDataParamerte
 // for forward compatibility
 type ExpServiceServer interface {
 	AddData(context.Context, *AddDataParameter) (*AddDataResponse, error)
-	QueryData(context.Context, *QueryDataParamerter) (*QueryDataResponse, error)
+	QueryData(context.Context, *QueryDataParameter) (*QueryDataResponse, error)
 	mustEmbedUnimplementedExpServiceServer()
 }
 
@@ -68,7 +68,7 @@ type UnimplementedExpServiceServer struct {
 func (UnimplementedExpServiceServer) AddData(context.Context, *AddDataParameter) (*AddDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddData not implemented")
 }
-func (UnimplementedExpServiceServer) QueryData(context.Context, *QueryDataParamerter) (*QueryDataResponse, error) {
+func (UnimplementedExpServiceServer) QueryData(context.Context, *QueryDataParameter) (*QueryDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryData not implemented")
 }
 func (UnimplementedExpServiceServer) mustEmbedUnimplementedExpServiceServer() {}
@@ -103,7 +103,7 @@ func _ExpService_AddData_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _ExpService_QueryData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryDataParamerter)
+	in := new(QueryDataParameter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func _ExpService_QueryData_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/pb.ExpService/QueryData",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ExpServiceServer).QueryData(ctx, req.(*QueryDataParamerter))
+		return srv.(ExpServiceServer).QueryData(ctx, req.(*QueryDataParameter))
 	}
 	return interceptor(ctx, in, info, handler)
 }

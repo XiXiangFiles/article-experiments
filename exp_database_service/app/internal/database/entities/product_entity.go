@@ -23,7 +23,7 @@ type ProductRaw struct {
 }
 
 type ProductFilter struct {
-	Id *int `condition:"id = ?" json:"id"`
+	Id *int `condition:"p_id = ?" json:"id"`
 }
 
 type ProductCollection struct {
@@ -31,7 +31,7 @@ type ProductCollection struct {
 }
 
 func (raw ProductRaw) TableName() string {
-	return "product"
+	return "products"
 }
 
 func NewProductCollection(db *gorm.DB) Collection {
