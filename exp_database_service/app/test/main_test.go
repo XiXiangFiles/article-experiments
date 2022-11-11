@@ -5,9 +5,12 @@ import (
 	"app/internal/global"
 	"app/pb"
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -36,17 +39,27 @@ func TestCase(t *testing.T) {
 	var wg sync.WaitGroup
 	conn := GetConnection()
 	client := pb.NewExpServiceClient(conn)
-
-	for r := 0; r < 3; r++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for i := 0; i < 150000; i++ {
-				client.QueryData(context.TODO(), &pb.QueryDataParameter{
-					Id: int32(i),
-				})
-			}
-		}()
+	f, _ := os.Create("data.txt")
+	defer f.Close()
+	var sum float64
+	var maxCount int = 30
+	for count := 0; count < maxCount; count++ {
+		fmt.Println("round := ", count+1)
+		now := time.Now().Unix()
+		for r := 0; r < 1; r++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for i := 0; i < 150000; i++ {
+					client.QueryData(context.TODO(), &pb.QueryDataParameter{
+						Id: int32(i),
+					})
+				}
+			}()
+		}
+		wg.Wait()
+		end := time.Now().Unix()
+		sum += float64(end-now) / float64(time.Second)
 	}
-	wg.Wait()
+	f.WriteString(fmt.Sprintf("%f,", sum/float64(maxCount)))
 }
