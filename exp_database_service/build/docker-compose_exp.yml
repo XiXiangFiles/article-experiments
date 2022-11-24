@@ -1,0 +1,70 @@
+version: "3.9"
+
+x-logging:
+  &default-logging
+  options:
+    max-size: '10m'
+    max-file: '10'
+  driver: json-file
+
+services:
+  client:
+    image: golang:1.19.2-alpine3.16
+    volumes:
+      - ${PWD}/exp_database_service/client:/app
+    networks:
+      - test-net2
+    working_dir: /app
+    tty: true
+    logging: *default-logging
+
+  db-service:
+    image: golang:1.19.2-alpine3.16
+    volumes:
+      - ${PWD}/exp_database_service/app:/app
+    networks:
+      - test-net2
+    working_dir: /app
+    tty: true
+    entrypoint: "go run main.go"
+    logging: *default-logging
+  
+  db-service2:
+    image: golang:1.19.2-alpine3.16
+    volumes:
+      - ${PWD}/exp_database_service/app:/app
+    networks:
+      - test-net2
+    working_dir: /app
+    tty: true
+    entrypoint: "go run main.go"
+    logging: *default-logging
+  
+  db-service3:
+    image: golang:1.19.2-alpine3.16
+    volumes:
+      - ${PWD}/exp_database_service/app:/app
+    networks:
+      - test-net2
+    working_dir: /app
+    tty: true
+    entrypoint: "go run main.go"
+    logging: *default-logging
+
+  database:
+    image: mysql:8.0.31
+    volumes:
+      - ./data/data.sql:/docker-entrypoint-initdb.d/data.sql
+    restart: always
+    ports:
+      - 3306:3306
+    networks:
+      - test-net2
+    environment:
+      MYSQL_ROOT_PASSWORD: studyCircle
+
+networks:
+  test-net2:
+    driver: bridge
+
+  
